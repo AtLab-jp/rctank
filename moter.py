@@ -1,36 +1,79 @@
-from gpio import GPIO
+import RPi.GPIO as GPIO
 import time
 
-gpio = GPIO()
-# LED
-gpio.set(31, True)
-gpio.set(33, True)
-# モータ
-gpio.set(5, True)
-gpio.set(10, True)
-gpio.set(11, True)
-gpio.set(13, True)
-gpio.set(15, True)
-p = gpio.pwm(15, 100)
+LED = [29, 31, 33]
+MoterR = [5, 10]
+MoterL = [13, 11]
+POWER = 15
 
-while True:
-    # LED
-    gpio.out(31, True)
-    gpio.out(33, False)
-    # モータ
-    gpio.out(5, False)
-    gpio.out(10, True)
-    gpio.out(11, False)
-    gpio.out(13, True)
-    time.sleep(0.5)
+def setup():
+    ##  -----*----- セットアップ -----*----- ##
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setwarnings(False)
 
     # LED
-    gpio.out(31, False)
-    gpio.out(33, True)
-    # モータ
-    gpio.out(5, True)
-    gpio.out(10, False)
-    gpio.out(11, True)
-    gpio.out(13, True)
-    time.sleep(0.5)
-    print(100)
+    GPIO.setup(LED, GPIO.OUT)
+    # Moter
+    GPIO.setup(MoterR, GPIO.OUT) # RIGHT
+    GPIO.setup(MoterL, GPIO.OUT) # LEFT
+    GPIO.setup(POWER, GPIO.OUT)  # Vref
+
+def led(left, right, err):
+    ##  -----*----- LED制御 -----*----- ##
+    # 点灯/消灯（True/False）
+    GPIO.output(LED, (left, right, err))
+
+def move(mode, duty=50):
+    ##  -----*----- モータ制御 -----*----- ##
+    if mode == 0:
+        # Forward
+        GPIO.output(MoterR, (True, False))
+        GPIO.output(MoterL, (True, False))
+    elif mode == 1:
+        # CW
+        GPIO.output(MoterR, (False, True))
+        GPIO.output(MoterL, (True, False))
+    elif mode == 2:
+        # CCW
+        GPIO.output(MoterR, (True, False))
+        GPIO.output(MoterL, (False, True))
+    elif mode == 3:
+        # Back
+        GPIO.output(MoterR, (False, True))
+        GPIO.output(MoterL, (False, True))
+    elif mode == 4:
+        # Stop
+        GPIO.output(MoterR, (False, False))
+        GPIO.output(MoterL, (False, False))
+
+    power.ChangeDutyCycle(duty)
+
+
+setup()
+# Vref(PWM)
+power = GPIO.PWM(POWER, 1000)
+power.start(0)
+
+led(True, False, True)
+
+for i in range(3):
+    # Forward
+    move(0)
+    led(True, True, False)
+    time.sleep(1)
+    # CW
+    move(1)
+    led(True, False, False)
+    time.sleep(1)
+    # CCW
+    move(2)
+    led(False, True, False)
+    time.sleep(1)
+    # Back
+    move(3)
+    led(True, True, False)
+    time.sleep(1)
+    # Stpp
+    move(4)
+    led(False, False, False)
+    time.sleep(1)
