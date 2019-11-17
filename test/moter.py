@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 
 # 初期化
-GPIO.setmode(RPi.GPIO.BOARD)
+GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
 ## ===== PINのセットアップ ==========
