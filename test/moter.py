@@ -23,7 +23,7 @@ def led(left, right, err):
     # 点灯/消灯（True/False）
     GPIO.output(LED, (left, right, err))
 
-def move(mode, power=50):
+def move(mode, duty=50):
     ##  -----*----- モータ制御 -----*----- ##
     if mode == 0:
         # Forward
@@ -45,7 +45,7 @@ def move(mode, power=50):
         # Stop
         GPIO.output(MoterR, (False, False))
         GPIO.output(MoterL, (False, False))
-    power.ChangeDutyCycle(power)
+    power.ChangeDutyCycle(duty)
 
 
 setup()
