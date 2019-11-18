@@ -1,9 +1,9 @@
 import RPi.GPIO as GPIO
 import time
 
-LED = [29, 31, 33]
-MoterR = [5, 10]
-MoterL = [13, 11]
+LED = (29, 31, 33)
+MoterR = (5, 10)
+MoterL = (13, 11)
 POWER = 15
 
 def setup():
