@@ -23,7 +23,7 @@ def led(left, right, err):
     # 点灯/消灯（True/False）
     GPIO.output(LED, (left, right, err))
 
-def move(mode, duty=50):
+def move(mode, duty=100):
     ##  -----*----- モータ制御 -----*----- ##
     if mode == 0:
         # Forward
@@ -55,7 +55,8 @@ power = GPIO.PWM(POWER, 1000)
 power.start(0)
 
 
-for i in range(3):
+#for i in range(3):
+while True:
     # Forward
     move(0)
     led(True, True, False)
