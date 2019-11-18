@@ -1,4 +1,4 @@
-rctank
+RCtank
 ======
 
 RC Tank Controlled by Raspberry Pi and Smartphone
