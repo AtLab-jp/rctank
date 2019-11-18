@@ -54,7 +54,6 @@ setup()
 power = GPIO.PWM(POWER, 1000)
 power.start(0)
 
-led(True, False, True)
 
 for i in range(3):
     # Forward
